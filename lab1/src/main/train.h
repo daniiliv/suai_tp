@@ -13,7 +13,7 @@ using namespace std;
  * Class Train.
  * @author: Ivanov Daniil (dania-spb@mail.ru)
  * @since: 1.10.2018
- *
+ * 13123123
  *
  */
 class Train {
