@@ -13,20 +13,32 @@ using namespace std;
  * Class Train.
  * @author: Ivanov Daniil (dania-spb@mail.ru)
  * @since: 1.10.2018
- * 13123123
+ *
  *
  */
 class Train {
-    //contains destination's name
-    string destination;
-    //contains train's number
+    /**
+     * Contains destination name.
+     */
+    char[] destination;
+    /**
+     * Contains train number.
+     */
     int trainNumber;
-    //contains departure's time
-    string departureTime;
+    /**
+     * Contains departure time.
+     */
+    char[] departureTime;
 public:
-    Train(string, int, string);
+    Train(char[], int, char[]);
     Train();
     ~Train();
+    void setDestination(char[]);
+    void setTrainNumber(int);
+    void setDepartureTime(char[]);
+    char[] getDestination();
+    int getTrainNumber();
+    char[] getDepartureTime();
 };
 
 
