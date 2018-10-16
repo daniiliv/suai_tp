@@ -7,20 +7,20 @@
 
 #include <iostream>
 #include <string>
+#include "time.h"
 
 using namespace std;
 /**
  * Class Train.
  * @author: Ivanov Daniil (dania-spb@mail.ru)
  * @since: 1.10.2018
- *
- *
  */
 class Train {
+private:
     /**
      * Contains destination name.
      */
-    char[] destination;
+    char* destination;
     /**
      * Contains train number.
      */
@@ -28,17 +28,24 @@ class Train {
     /**
      * Contains departure time.
      */
-    char[] departureTime;
+    char* departureTime;
 public:
-    Train(char[], int, char[]);
+    Train(char*, int, char*);
     Train();
     ~Train();
-    void setDestination(char[]);
+    void setDestination(char*);
     void setTrainNumber(int);
-    void setDepartureTime(char[]);
-    char[] getDestination();
+    void setDepartureTime(char*);
+    char* getDestination();
     int getTrainNumber();
-    char[] getDepartureTime();
+    char* getDepartureTime();
+    friend ostream& operator<<(ostream&, Train);
+    friend istream&operator>>(istream&, Train&);
+    int getConvertedDepartureTime();
+    static Train* sortTrains(Train*);
+    Train(const Train&);
+    Train &operator=(Train&);
+
 };
 
 
