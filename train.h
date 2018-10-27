@@ -6,8 +6,7 @@
 #define UNTITLED_TRAIN_H
 
 #include <iostream>
-#include <string>
-#include "time.h"
+//#include <string>
 
 using namespace std;
 /**
@@ -45,6 +44,8 @@ public:
     static Train* sortTrains(Train*);
     Train(const Train&);
     Train &operator=(Train&);
+    static Train* findTrainsByDestinationName(char*, Train*);
+    static char* inputDestinationFromKeyboard();
 
 };
 

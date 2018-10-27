@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cstring>
 
-#define TRAIN_NUMS 6
+#define TRAIN_NUMS 3
 
 Train::Train(char* destination, int trainNumber, char* departureTime) {
 
@@ -32,21 +32,28 @@ Train::Train(char* destination, int trainNumber, char* departureTime) {
     cout << "Constructor with parameters called!\n";
 }
 Train::Train() {
-    this->destination = new char[50];
-    if(!(this->destination)) {
-        cout << "Memory allocation error!\n";
+    try {
+        this->destination = new char[50];
+        if (!(this->destination)) {
+            throw 1;
+        }
+        this->trainNumber = 0;
+        this->departureTime = new char[10];
+        if (!(this->departureTime)) {
+            throw 2;
+        }
+        cout << "Default constructor called!\n";
+    }
+    catch(int a) {
+        cout << "Caught exception number:  " << a;
+        if (a == 1) {
+            cout << " - memory allocation error for char[] destination" << endl;
+        }
+        else if (a == 2) {
+            cout << " - memory allocation error for char[] departureTime" << endl;
+        }
         exit(1);
     }
-
-    this->trainNumber = 0;
-
-    this->departureTime = new char[10];
-    if(!(this->departureTime)) {
-        cout << "Memory allocation error!\n";
-        exit(1);
-    }
-
-    cout << "Default constructor called!\n";
 }
 Train::~Train() {
     delete [] this->destination;
@@ -186,6 +193,54 @@ Train &Train::operator=(Train &train) {
     strcpy(this->departureTime, train.departureTime);
 
     return *this;
+}
+
+Train *Train::findTrainsByDestinationName(char *destination, Train *trains) {
+    Train* temp = new Train[TRAIN_NUMS];
+    size_t searchSize = 0;
+    size_t myCharSize = 0;
+    size_t searchCharSize = strlen(destination) + 1;
+    size_t endOfString = 0;
+    int numOfTrainsFound = 0;
+    for (int i = 0; i < TRAIN_NUMS; i++) {
+        myCharSize = strlen(trains[i].getDestination() + 1);
+        endOfString = searchCharSize < myCharSize ? searchCharSize : myCharSize; //to avoid arrayOutOfBoundException
+        for (int j = 0; j < endOfString; j++) {
+            if (trains[i].getDestination()[j] == destination[j]) {
+                searchSize++;
+            }
+        }
+        if (searchSize == myCharSize) {
+
+            temp[numOfTrainsFound++] = trains[i];
+            searchSize = 0;
+        }
+    }
+    if (numOfTrainsFound == 0) {
+        cout << "There are no trains of this destination name!" << endl;
+        return trains;
+    } else {
+        cout << "Trains were found:" << endl;
+        for (int i = 0; i < numOfTrainsFound; i++) {
+            cout << temp[i];
+        }
+    }
+
+    return temp;
+}
+
+char *Train::inputDestinationFromKeyboard() {
+    char *temp = new char[50];
+    cout << "Enter destination: ";
+    cin >> temp;
+    size_t len = strlen(temp) + 1;
+    char *dest = new char[len];
+    if(!dest) {
+        cout << "Mem alloc error" << endl;
+        exit(1);
+    }
+    strcpy(dest, temp);
+    return dest;
 }
 
 
