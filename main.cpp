@@ -1,11 +1,8 @@
 #include <iostream>
 #include "train.h"
-#define TRAIN_NUMS 3
+#define TRAIN_NUMS 6
 
 using namespace std;
-
-
-
 
 int main() {
     Train* testTrain;
@@ -48,10 +45,6 @@ int main() {
                 cout << "An invalid choice." << endl;
         }
     }
-
-
-    return 0;
-
 }
 
 

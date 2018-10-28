@@ -1,36 +1,50 @@
-//
-// Created by daniil on 01.10.18.
-//
-
 #include "train.h"
 #include <iostream>
 #include <cstring>
 
-#define TRAIN_NUMS 3
+#define TRAIN_NUMS 6
 
+/**
+ * Конструктор с параметрами.
+ * @param destination
+ * @param trainNumber
+ * @param departureTime
+ */
 Train::Train(char* destination, int trainNumber, char* departureTime) {
+    try {
+        size_t len;
+        len = strlen(destination) + 1;
+        this->destination = new char[len];
+        if (!(this->destination)) {
+            throw 1;
+        }
+        strcpy(this->destination, destination);
 
-    size_t len;
-    len = strlen(destination) + 1;
-    this->destination = new char[len];
-    if(!(this->destination)) {
-        cout << "Memory allocation error!\n";
+        this->trainNumber = trainNumber;
+
+        len = strlen(departureTime) + 1;
+        this->departureTime = new char[len];
+        if (!(this->departureTime)) {
+            throw 2;
+        }
+        strcpy(this->departureTime, departureTime);
+    }
+    catch (int a) {
+        cout << "Caught exception number:  " << a;
+        if (a == 1) {
+            cout << " - memory allocation error for char[] destination" << endl;
+        }
+        else if (a == 2) {
+            cout << " - memory allocation error for char[] departureTime" << endl;
+        }
         exit(1);
     }
-    strcpy(this->destination, destination);
-
-    this->trainNumber = trainNumber;
-
-    len = strlen(departureTime) + 1;
-    this->departureTime = new char[len];
-    if(!(this->departureTime)) {
-        cout << "Memory allocation error!\n";
-        exit(1);
-    }
-    strcpy(this->departureTime, departureTime);
-
     cout << "Constructor with parameters called!\n";
 }
+
+/**
+ * Конструктор без параметров.
+ */
 Train::Train() {
     try {
         this->destination = new char[50];
@@ -55,51 +69,108 @@ Train::Train() {
         exit(1);
     }
 }
+
+/**
+ * Деструктор.
+ */
 Train::~Train() {
     delete [] this->destination;
     delete [] this->departureTime;
     trainNumber = 0;
     cout << "Destructor called!\n";
 }
+
+/**
+ * Сеттер направления.
+ * @param destination
+ */
 void Train::setDestination(char* destination) {
-    size_t len;
-    len = strlen(destination) + 1;
-    this->destination = new char[len];
-    if(!(this->destination)) {
-        cout << "Memory allocation error!\n";
+    try {
+        size_t len;
+        len = strlen(destination) + 1;
+        this->destination = new char[len];
+        if (!(this->destination)) {
+            throw 1;
+        }
+        strcpy(this->destination, destination);
+    }
+    catch (int a) {
+        cout << " - memory allocation error for char[] destination" << endl;
         exit(1);
     }
-    strcpy(this->destination, destination);
 }
+
+/**
+ * Сеттер номера поезда.
+ * @param trainNumber
+ */
 void Train::setTrainNumber(int trainNumber) {
     this->trainNumber = trainNumber;
 }
+
+/**
+ * Сеттер времени отправления поезда.
+ * @param departureTime
+ */
 void Train::setDepartureTime(char* departureTime) {
-    size_t len;
-    len = strlen(departureTime) + 1;
-    this->departureTime = new char[len];
-    if(!(this->departureTime)) {
-        cout << "Memory allocation error!\n";
+    try {
+        size_t len;
+        len = strlen(departureTime) + 1;
+        this->departureTime = new char[len];
+        if (!(this->departureTime)) {
+            throw 1;
+        }
+        strcpy(this->departureTime, departureTime);
+    }
+    catch (int a) {
+        cout << " - memory allocation error for char[] destination" << endl;
         exit(1);
     }
-    strcpy(this->departureTime, departureTime);
 }
+
+/**
+ * Геттер направления поезда.
+ * @return
+ */
 char* Train::getDestination() {
     return this->destination;
 }
+
+/**
+ * Геттер номера поезда.
+ * @return
+ */
 int Train::getTrainNumber() {
     return this->trainNumber;
 }
+
+/**
+ * Геттер времени отправления поезда.
+ * @return
+ */
 char* Train::getDepartureTime() {
     return this->departureTime;
 }
+
+/**
+ * Перегруженный оператор вывода.
+ * @param stream
+ * @param obj
+ * @return
+ */
 ostream &operator<<(ostream &stream, Train obj) {
     stream << "Destination: " << obj.getDestination() << endl;
     stream << "Train number: " << obj.getTrainNumber() << endl;
     stream << "Departure time: " << obj.getDepartureTime() << endl;
-
     return stream;
 }
+
+/**
+ * Перегруженный оператор ввода.
+ * @param stream
+ * @param obj
+ * @return
+ */
 istream &operator>>(istream &stream, Train &obj) {
     char *dest = new char[50];
     int trNum;
@@ -120,6 +191,11 @@ istream &operator>>(istream &stream, Train &obj) {
     return stream;
 }
 
+/**
+ * Метод конвертирует строковое представление времени отправления поезда в целочисленный тип. Возвращает время в минутах.
+ * В минутах - для удобства последующей сортировки по времени отправления.
+ * @return
+ */
 int Train::getConvertedDepartureTime() {
     int hours = ((int)departureTime[0] - '0') * 10 + (int)departureTime[1] - '0';
     int minutes = ((int)departureTime[3] - '0') * 10 + (int)departureTime[4] - '0';
@@ -127,6 +203,12 @@ int Train::getConvertedDepartureTime() {
     return hours * 60 + minutes;
 }
 
+/**
+ * Метод сортирует экземпляры класса Train по времени отправления поезда.
+ * В хронологическом порядке - от более раннего к более позднему.
+ * @param train
+ * @return
+ */
 Train *Train::sortTrains(Train* train) {
     bool swapped = false;
     Train temp;
@@ -148,53 +230,87 @@ Train *Train::sortTrains(Train* train) {
     return train;
 }
 
+/**
+ * Конструктор копии.
+ * @param train
+ */
 Train::Train(const Train &train) {
-    size_t len;
-    len = strlen(train.destination) + 1;
-    this->destination = new char[len];
-    if(!(this->destination)) {
-        cout << "Memory allocation error!\n";
+    try {
+        size_t len;
+        len = strlen(train.destination) + 1;
+        this->destination = new char[len];
+        if (!(this->destination)) {
+            throw 1;
+        }
+        strcpy(this->destination, train.destination);
+
+        this->trainNumber = train.trainNumber;
+
+        len = strlen(train.departureTime) + 1;
+        this->departureTime = new char[len];
+        if (!(this->departureTime)) {
+            throw 2;
+        }
+        strcpy(this->departureTime, train.departureTime);
+    }
+    catch (int a) {
+        cout << "Caught exception number:  " << a;
+        if (a == 1) {
+            cout << " - memory allocation error for char[] destination" << endl;
+        }
+        else if (a == 2) {
+            cout << " - memory allocation error for char[] departureTime" << endl;
+        }
         exit(1);
     }
-    strcpy(this->destination, train.destination);
-
-    this->trainNumber = train.trainNumber;
-
-    len = strlen(train.departureTime) + 1;
-    this->departureTime = new char[len];
-    if(!(this->departureTime)) {
-        cout << "Memory allocation error!\n";
-        exit(1);
-    }
-    strcpy(this->departureTime, train.departureTime);
 }
 
+/**
+ * Перегруженный оператор присваивания.
+ * @param train
+ * @return
+ */
 Train &Train::operator=(Train &train) {
-    if (strlen(this->destination) < strlen(train.destination)) {
-        delete[] this->destination;
-        this->destination = new char[strlen(train.destination)];
-        if(!(this->destination)) {
-            cout << "Memory allocation error!\n";
-            exit(1);
+    try {
+        if (strlen(this->destination) < strlen(train.destination)) {
+            delete[] this->destination;
+            this->destination = new char[strlen(train.destination)];
+            if (!(this->destination)) {
+                throw 1;
+            }
         }
-    }
-    strcpy(this->destination, train.destination);
+        strcpy(this->destination, train.destination);
 
-    this->trainNumber = train.trainNumber;
+        this->trainNumber = train.trainNumber;
 
-    if (strlen(this->departureTime) < strlen(train.departureTime)) {
-        delete[] this->departureTime;
-        this->departureTime = new char[strlen(train.departureTime)];
-        if(!(this->departureTime)) {
-            cout << "Memory allocation error!\n";
-            exit(1);
+        if (strlen(this->departureTime) < strlen(train.departureTime)) {
+            delete[] this->departureTime;
+            this->departureTime = new char[strlen(train.departureTime)];
+            if (!(this->departureTime)) {
+                throw 2;
+            }
         }
+        strcpy(this->departureTime, train.departureTime);
     }
-    strcpy(this->departureTime, train.departureTime);
-
+    catch (int a) {
+        cout << "Caught exception number:  " << a;
+        if (a == 1) {
+            cout << " - memory allocation error for char[] destination" << endl;
+        }
+        else if (a == 2) {
+            cout << " - memory allocation error for char[] departureTime" << endl;
+        }
+        exit(1);
+    }
     return *this;
 }
 
+/**
+ * Статический метод поиска поездов по направлению поезда.
+ * @param destination Направление поезда.
+ * @param trains Массив экземпляров класса Train.
+ * @return Найденные поезда.
+ */
 Train *Train::findTrainsByDestinationName(char *destination, Train *trains) {
     Train* temp = new Train[TRAIN_NUMS];
     size_t searchSize = 0;
@@ -229,6 +345,10 @@ Train *Train::findTrainsByDestinationName(char *destination, Train *trains) {
     return temp;
 }
 
+/**
+ * Статический метод пользовательского ввода направления поезда с клавиатуры.
+ * @return
+ */
 char *Train::inputDestinationFromKeyboard() {
     char *temp = new char[50];
     cout << "Enter destination: ";
