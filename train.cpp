@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cstring>
 
-#define TRAIN_NUMS 6
+#define TRAIN_NUMS 3
 
 /**
  * Конструктор с параметрами.
@@ -56,7 +56,7 @@ Train::Train() {
         if (!(this->departureTime)) {
             throw 2;
         }
-        cout << "Default constructor called!\n";
+        cout << "Default constructor called! T\n";
     }
     catch(int a) {
         cout << "Caught exception number:  " << a;
@@ -77,7 +77,7 @@ Train::~Train() {
     delete [] this->destination;
     delete [] this->departureTime;
     trainNumber = 0;
-    cout << "Destructor called!\n";
+    cout << "Destructor called! T\n";
 }
 
 /**
@@ -165,37 +165,17 @@ ostream &operator<<(ostream &stream, Train obj) {
     return stream;
 }
 
-/**
- * Перегруженный оператор ввода.
- * @param stream
- * @param obj
- * @return
- */
-istream &operator>>(istream &stream, Train &obj) {
-    char *dest = new char[50];
-    int trNum;
-    char* depTime = new char[10];
-
-    cout << "Enter destination: ";
-    stream >> dest; obj.setDestination(dest);
-
-    cout << "Enter train number: ";
-    stream >> trNum; obj.setTrainNumber(trNum);
-
-    cout << "Enter departure time in format (00:00): ";
-    stream >> depTime; obj.setDepartureTime(depTime);
-
-    delete [] dest;
-    delete [] depTime;
-
-    return stream;
+void Train::showTrain() {
+    cout << "Destination: " << this->destination << endl;
+    cout << "Train number: " << this->trainNumber << endl;
+    cout << "Departure time: " << this->departureTime << endl;
 }
-
 /**
  * Метод конвертирует строковое представление времени отправления поезда в целочисленный тип. Возвращает время в минутах.
  * В минутах - для удобства последующей сортировки по времени отправления.
  * @return
  */
+
 int Train::getConvertedDepartureTime() {
     int hours = ((int)departureTime[0] - '0') * 10 + (int)departureTime[1] - '0';
     int minutes = ((int)departureTime[3] - '0') * 10 + (int)departureTime[4] - '0';
@@ -203,39 +183,23 @@ int Train::getConvertedDepartureTime() {
     return hours * 60 + minutes;
 }
 
-/**
- * Метод сортирует экземпляры класса Train по времени отправления поезда.
- * В хронологическом порядке - от более раннего к более позднему.
- * @param train
- * @return
- */
-Train *Train::sortTrains(Train* train) {
-    bool swapped = false;
-    Train temp;
-    for (int i = 0; i < TRAIN_NUMS - 1; i++) {
-        swapped = false;
-        for (int j = 0; j < TRAIN_NUMS - i - 1; j++) {
-            if(train[j].getConvertedDepartureTime() > train[j + 1].getConvertedDepartureTime()) {
-               temp = train[j];
-               train[j] = train[j + 1];
-               train[j + 1] = temp;
-               swapped = true;
-            }
-        }
-        if(!swapped) {
-            break;
-        }
-    }
-
-    return train;
-}
 
 /**
  * Конструктор копии.
  * @param train
  */
 Train::Train(const Train &train) {
-    try {
+    size_t len = strlen(train.destination) + 1;
+    destination = new char[len];
+    strcpy(destination, train.destination);
+
+    len = strlen(train.departureTime) + 1;
+    departureTime = new char[len];
+    strcpy(departureTime, train.departureTime);
+
+    trainNumber = train.trainNumber;
+    /*
+    try {/*
         size_t len;
         len = strlen(train.destination) + 1;
         this->destination = new char[len];
@@ -252,26 +216,8 @@ Train::Train(const Train &train) {
             throw 2;
         }
         strcpy(this->departureTime, train.departureTime);
-    }
-    catch (int a) {
-        cout << "Caught exception number:  " << a;
-        if (a == 1) {
-            cout << " - memory allocation error for char[] destination" << endl;
-        }
-        else if (a == 2) {
-            cout << " - memory allocation error for char[] departureTime" << endl;
-        }
-        exit(1);
-    }
-}
-
-/**
- * Перегруженный оператор присваивания.
- * @param train
- * @return
- */
-Train &Train::operator=(Train &train) {
-    try {
+        */
+    /*
         if (strlen(this->destination) < strlen(train.destination)) {
             delete[] this->destination;
             this->destination = new char[strlen(train.destination)];
@@ -282,7 +228,6 @@ Train &Train::operator=(Train &train) {
         strcpy(this->destination, train.destination);
 
         this->trainNumber = train.trainNumber;
-
         if (strlen(this->departureTime) < strlen(train.departureTime)) {
             delete[] this->departureTime;
             this->departureTime = new char[strlen(train.departureTime)];
@@ -301,8 +246,80 @@ Train &Train::operator=(Train &train) {
             cout << " - memory allocation error for char[] departureTime" << endl;
         }
         exit(1);
-    }
+    } */
+}
+
+/**
+ * Перегруженный оператор присваивания.
+ * @param train
+ * @return
+ */
+Train &Train::operator=(const Train &train) {
+
+    size_t len = strlen(train.destination) + 1;
+    destination = new char[len];
+    strcpy(destination, train.destination);
+
+    len = strlen(train.departureTime) + 1;
+    departureTime = new char[len];
+    strcpy(departureTime, train.departureTime);
+
+    trainNumber = train.trainNumber;
+
     return *this;
+
+    /*
+    try {
+        if (strlen(this->destination) < strlen(train.destination)) {
+            delete[] this->destination;
+            this->destination = new char[strlen(train.destination)];
+            if (!(this->destination)) {
+                throw 1;
+            }
+        }
+        strcpy(this->destination, train.destination);
+
+        this->trainNumber = train.trainNumber;
+        if (strlen(this->departureTime) < strlen(train.departureTime)) {
+            delete[] this->departureTime;
+            this->departureTime = new char[strlen(train.departureTime)];
+            if (!(this->departureTime)) {
+                throw 2;
+            }
+        }
+        strcpy(this->departureTime, train.departureTime);
+
+        /*
+        size_t len;
+        len = strlen(train.destination) + 1;
+        this->destination = new char[len];
+        if (!(this->destination)) {
+            throw 1;
+        }
+        strcpy(this->destination, train.destination);
+
+        this->trainNumber = train.trainNumber;
+
+        len = strlen(train.departureTime) + 1;
+        this->departureTime = new char[len];
+        if (!(this->departureTime)) {
+            throw 2;
+        }
+        strcpy(this->departureTime, train.departureTime);
+
+    }
+    catch (int a) {
+        cout << "Caught exception number:  " << a;
+        if (a == 1) {
+            cout << " - memory allocation error for char[] destination" << endl;
+        }
+        else if (a == 2) {
+            cout << " - memory allocation error for char[] departureTime" << endl;
+        }
+        exit(1);
+    }
+    return *this; */
+
 }
 
 /**
@@ -311,6 +328,7 @@ Train &Train::operator=(Train &train) {
  * @param trains Массив экземпляров класса Train.
  * @return Найденные поезда.
  */
+ /*
 Train *Train::findTrainsByDestinationName(char *destination, Train *trains) {
     Train* temp = new Train[TRAIN_NUMS];
     size_t searchSize = 0;
@@ -344,11 +362,12 @@ Train *Train::findTrainsByDestinationName(char *destination, Train *trains) {
 
     return temp;
 }
-
+*/
 /**
  * Статический метод пользовательского ввода направления поезда с клавиатуры.
  * @return
  */
+ /*
 char *Train::inputDestinationFromKeyboard() {
     char *temp = new char[50];
     cout << "Enter destination: ";
@@ -362,7 +381,61 @@ char *Train::inputDestinationFromKeyboard() {
     strcpy(dest, temp);
     return dest;
 }
+*/
 
+/**
+* Перегруженный оператор ввода.
+* @param stream
+* @param obj
+* @return
+*/
+/*
+istream &operator>>(istream &stream, Train &obj) {
+   char *dest = new char[50];
+   int trNum;
+   char* depTime = new char[10];
 
+   cout << "Enter destination: ";
+   stream >> dest; obj.setDestination(dest);
 
+   cout << "Enter train number: ";
+   stream >> trNum; obj.setTrainNumber(trNum);
 
+   cout << "Enter departure time in format (00:00): ";
+   stream >> depTime; obj.setDepartureTime(depTime);
+
+   delete [] dest;
+   delete [] depTime;
+
+   return stream;
+}
+*/
+
+/**
+ * Метод сортирует экземпляры класса Train по времени отправления поезда.
+ * В хронологическом порядке - от более раннего к более позднему.
+ * @param train
+ * @return
+ */
+/*
+Train *Train::sortTrains(Train* train) {
+   bool swapped = false;
+   Train temp;
+   for (int i = 0; i < TRAIN_NUMS - 1; i++) {
+       swapped = false;
+       for (int j = 0; j < TRAIN_NUMS - i - 1; j++) {
+           if(train[j].getConvertedDepartureTime() > train[j + 1].getConvertedDepartureTime()) {
+              temp = train[j];
+              train[j] = train[j + 1];
+              train[j + 1] = temp;
+              swapped = true;
+           }
+       }
+       if(!swapped) {
+           break;
+       }
+   }
+
+   return train;
+}
+*/

@@ -85,7 +85,7 @@ public:
      * Перегруженный оператор ввода.
      * @return
      */
-    friend istream&operator>>(istream&, Train&);
+   // friend istream&operator>>(istream&, Train&);
 
     /**
      * Метод конвертирует строковое представление времени отправления поезда в целочисленный тип. Возвращает время в минутах.
@@ -99,7 +99,7 @@ public:
      * В хронологическом порядке - от более раннего к более позднему.
      * @return
      */
-    static Train* sortTrains(Train*);
+    //static Train* sortTrains(Train*);
 
     /**
      * Конструктор копии.
@@ -110,20 +110,21 @@ public:
      * Перегруженный оператор присваивания.
      * @return
      */
-    Train &operator=(Train&);
+    Train &operator=(const Train&);
 
     /**
      * Статический метод поиска поездов по направлению поезда.
      * @return Найденные поезда.
      */
-    static Train* findTrainsByDestinationName(char*, Train*);
+    //static Train* findTrainsByDestinationName(char*, Train*);
 
     /**
      * Статический метод пользовательского ввода направления поезда с клавиатуры.
      * @return
      */
-    static char* inputDestinationFromKeyboard();
+    //static char* inputDestinationFromKeyboard();
 
+    void showTrain();
 };
 
 
