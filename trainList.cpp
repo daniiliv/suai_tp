@@ -175,8 +175,14 @@ TrainList TrainList::findTrainsByDestinationName(char *destination) {
 }
 
 TrainList &TrainList::operator+=(Train &train) {
+    //this->trains[this->amountTrains++] = train;
 
-    this->trains[this->amountTrains++] = train;
+    trains[amountTrains].setDestination(train.getDestination());
+    trains[amountTrains].setTrainNumber(train.getTrainNumber());
+    trains[amountTrains].setDepartureTime(train.getDepartureTime());
+
+    amountTrains++;
+
     cout << "am trains: " << amountTrains << endl;
     return *this;
 }
@@ -238,7 +244,7 @@ istream &operator>>(istream &stream, TrainList &trainList) {
 }
 
 void TrainList::addTrains() {
-    //Train *trains = new Train[TRAIN_NUMS];
+    Train *tempTrains = new Train[TRAIN_NUMS];
     char *dest = new char[50];
     int trNum;
     char* depTime = new char[10];
@@ -246,19 +252,19 @@ void TrainList::addTrains() {
     for (int i = 0; i < TRAIN_NUMS; i++) {
         cout << "Enter destination: ";
         cin >> dest;
-        trains[i].setDestination(dest);
+        tempTrains[i].setDestination(dest);
 
         cout << "Enter train number: ";
         cin >> trNum;
-        trains[i].setTrainNumber(trNum);
+        tempTrains[i].setTrainNumber(trNum);
 
         cout << "Enter departure time in format (00:00): ";
         cin >> depTime;
-        trains[i].setDepartureTime(depTime);
+        tempTrains[i].setDepartureTime(depTime);
 
-        amountTrains++;
+        //amountTrains++;
 
-        //*this+=trains[i];
+        *this+=tempTrains[i];
     }
     delete [] dest;
     delete [] depTime;
