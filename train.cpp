@@ -158,7 +158,7 @@ char* Train::getDepartureTime() {
  * @param obj
  * @return
  */
-ostream &operator<<(ostream &stream, Train obj) {
+ostream &operator<<(ostream &stream, Train &obj) {
     stream << "Destination: " << obj.getDestination() << endl;
     stream << "Train number: " << obj.getTrainNumber() << endl;
     stream << "Departure time: " << obj.getDepartureTime() << endl;

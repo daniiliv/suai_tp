@@ -19,7 +19,7 @@ void UserInterface::showMenu() {
 void UserInterface::addTrains() {
     cout << "------------ Add trains --------------" << endl;
     //cin >> this->trainList;
-    this->trainList.addTrains();
+    cin >> this->trainList;
 }
 
 void UserInterface::showTrains() {
@@ -28,7 +28,7 @@ void UserInterface::showTrains() {
 
     cout << "------------ Show all trains --------------" << endl;
     //cout << this->trainList;
-    this->trainList.showTrains();
+    cout << this->trainList;
     /*
     if (this->trainList.getAmountTrains() == 0) {
         cout << "There are no trains.";
@@ -65,9 +65,10 @@ void UserInterface::findTrainsByDestination() {
     }
     strcpy(dest, temp);
 
-    //cout << trainList.findTrainsByDestinationName(dest);
+    //trainList.findTrainsByDestinationName(dest).showTrains();
+    TrainList tempTrainList = this->trainList.findTrainsByDestinationName(dest);
 
-
+    cout << tempTrainList;
     delete [] temp;
 }
 

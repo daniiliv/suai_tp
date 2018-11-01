@@ -79,7 +79,7 @@ public:
      * Перегруженный оператор вывода.
      * @return
      */
-    friend ostream& operator<<(ostream&, Train);
+    friend ostream& operator<<(ostream&, Train&);
 
     /**
      * Перегруженный оператор ввода.

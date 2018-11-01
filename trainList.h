@@ -48,7 +48,7 @@ public:
      * Перегруженный оператор вывода.
      * @return
      */
-    friend ostream &operator<<(ostream&, TrainList);
+    friend ostream &operator<<(ostream&, TrainList &);
 
     friend istream &operator>>(istream &, TrainList &);
 

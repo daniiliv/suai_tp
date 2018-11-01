@@ -60,7 +60,7 @@ TrainList::~TrainList() {
     cout << "Destructor called! TL" << endl;
 }
 
-ostream &operator<<(ostream &stream, TrainList trainList) {
+ostream &operator<<(ostream &stream, TrainList &trainList) {
 
     //Train *trains;
     //trains = trainList.getTrains();
@@ -69,7 +69,7 @@ ostream &operator<<(ostream &stream, TrainList trainList) {
     } else {
         stream << "Train list: " << endl;
         for (int i = 0; i < trainList.getAmountTrains(); i++) {
-            trainList.getTrains()[i].showTrain();
+            stream << trainList.getTrains()[i];
         }
     }
     /*
@@ -211,31 +211,27 @@ TrainList TrainList::sortTrains() {
 }
 
 istream &operator>>(istream &stream, TrainList &trainList) {
-    /*
-    for (int i = 0; i < trains.getAmountTrains(); i++) {
-        stream >> trainList.trains[i];
-    }
-    */
-
-    Train *trains = new Train[TRAIN_NUMS];
+    Train *tempTrains = new Train[TRAIN_NUMS];
     char *dest = new char[50];
     int trNum;
-    char* depTime = new char[6];
+    char* depTime = new char[10];
 
     for (int i = 0; i < TRAIN_NUMS; i++) {
         cout << "Enter destination: ";
         cin >> dest;
-        trainList.trains[i].setDestination(dest);
+        tempTrains[i].setDestination(dest);
 
         cout << "Enter train number: ";
         cin >> trNum;
-        trainList.trains[i].setTrainNumber(trNum);
+        tempTrains[i].setTrainNumber(trNum);
 
         cout << "Enter departure time in format (00:00): ";
         cin >> depTime;
-        trainList.trains[i].setDepartureTime(depTime);
+        tempTrains[i].setDepartureTime(depTime);
 
-        trainList+=trainList.trains[i];
+        //amountTrains++;
+
+        trainList+=tempTrains[i];
     }
     delete [] dest;
     delete [] depTime;
