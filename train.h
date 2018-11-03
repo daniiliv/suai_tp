@@ -39,6 +39,11 @@ public:
     Train();
 
     /**
+     * Конструктор копии.
+     */
+    Train(const Train&);
+
+    /**
      * Деструктор.
      */
     ~Train();
@@ -76,18 +81,6 @@ public:
     char* getDepartureTime();
 
     /**
-     * Перегруженный оператор вывода.
-     * @return
-     */
-    friend ostream& operator<<(ostream&, Train&);
-
-    /**
-     * Перегруженный оператор ввода.
-     * @return
-     */
-   // friend istream&operator>>(istream&, Train&);
-
-    /**
      * Метод конвертирует строковое представление времени отправления поезда в целочисленный тип. Возвращает время в минутах.
      * В минутах - для удобства последующей сортировки по времени отправления.
      * @return
@@ -95,36 +88,17 @@ public:
     int getConvertedDepartureTime();
 
     /**
-     * Метод сортирует экземпляры класса Train по времени отправления поезда.
-     * В хронологическом порядке - от более раннего к более позднему.
+     * Перегруженный оператор вывода.
      * @return
      */
-    //static Train* sortTrains(Train*);
+    friend ostream& operator<<(ostream&, Train&);
 
-    /**
-     * Конструктор копии.
-     */
-    Train(const Train&);
 
     /**
      * Перегруженный оператор присваивания.
      * @return
      */
     Train &operator=(const Train&);
-
-    /**
-     * Статический метод поиска поездов по направлению поезда.
-     * @return Найденные поезда.
-     */
-    //static Train* findTrainsByDestinationName(char*, Train*);
-
-    /**
-     * Статический метод пользовательского ввода направления поезда с клавиатуры.
-     * @return
-     */
-    //static char* inputDestinationFromKeyboard();
-
-    void showTrain();
 };
 
 

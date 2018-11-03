@@ -11,11 +11,16 @@ using namespace std;
  */
 class TrainList {
 private:
-    Train *trains; // = new Train[TRAIN_NUMS];
+    /**
+     * Массив объектов типа Train - поезда в списке.
+     */
+    Train *trains;
+
+    /**
+     * Количество поездов в списке.
+     */
     int amountTrains;
-
 public:
-
     /**
      * Конструктор без параметров.
      */
@@ -36,13 +41,39 @@ public:
      */
     ~TrainList();
 
-    int getAmountTrains();
+    /**
+     * Сеттер массива объектов типа Train.
+     */
+    void setTrains(Train*, int);
 
-    Train* getTrains();
-
+    /**
+     * Сеттер количества поездов в коллекции.
+     */
     void setAmountTrains(int);
 
-    void setTrains(Train*, int);
+    /**
+    * Геттер экземпляров класса Train..
+    * @return Массив экземпляров класса Train.
+    */
+    Train* getTrains();
+
+    /**
+     * Геттер количества поездов в коллекции.
+     * @return Количество поездов в коллекции.
+     */
+    int getAmountTrains();
+
+    /**
+     * Сортировка поездов по времени отправления.
+     * @return Коллекцию поездов с выполненной сортировкой.
+     */
+    TrainList sortTrains();
+
+    /**
+     * Метод поиска поездов по заданному направлению.
+     * @return Коллекцию найденных поездов.
+     */
+    TrainList findTrainsByDestinationName(char*);
 
     /**
      * Перегруженный оператор вывода.
@@ -50,31 +81,25 @@ public:
      */
     friend ostream &operator<<(ostream&, TrainList &);
 
+    /**
+     * Перегруженный оператор ввода.
+     * @return
+     */
     friend istream &operator>>(istream &, TrainList &);
 
     /**
-     * Метод добавления поездов в коллекцию.
+     * Добавления поездов в коллекцию.
      * @return
      */
     TrainList &operator+=(Train&);
 
     /**
-     * Метод поиска поездов по направлению.
+     * Перегруженный оператор присваивания.
      * @return
      */
-    TrainList findTrainsByDestinationName(char*);
-
-    /**
-     * Сортировка поездов по направлению.
-     * @return
-     */
-    TrainList sortTrains();
-
     TrainList &operator=(TrainList &);
-
+//fix this - use << instead
     void showTrains();
-
-    void addTrains();
 };
 
 
