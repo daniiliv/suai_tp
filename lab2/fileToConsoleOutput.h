@@ -11,15 +11,35 @@ using namespace std;
 
 class fileToConsoleOutput {
 private:
-    string fileName = "/home/daniil/projects/suai_tp/lab2/sometext.txt";
+
+    /**
+     * Имя файла.
+     */
+    string const fileName = "/home/daniil/projects/suai_tp/lab2/sometext.txt";
+
+    /**
+     * Поток последовательного чтения символов из файла.
+     */
     ifstream file;
-    string strFile; //запись файла в эту строку
-    stringstream stream; //ввод в этот поток
+
+    /**
+     * Строковый поток, в который записываются цитаты.
+     */
+    stringstream stream;
+
+    /**
+     * Количество кавычек.
+     */
+    int count;
+
+    /**
+     * Текущий символ, прочитанный из файла.
+     */
+    char currChar;
 public:
     fileToConsoleOutput();
     ~fileToConsoleOutput();
     void execute();
-    bool checkStr();
 };
 
 #endif //LAB2_FILETOCONSOLEOUTPUT_H

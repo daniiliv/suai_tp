@@ -7,51 +7,38 @@
 
 fileToConsoleOutput::fileToConsoleOutput() {
     this->file.open(fileName, ios_base::in);
+    this->count = 0;
+    file.get(currChar);
 }
 
 fileToConsoleOutput::~fileToConsoleOutput() {
     this->file.close();
+    this->stream.str("");
+    this->count = 0;
 }
 
 void fileToConsoleOutput::execute() {
-
-    //считывание данных из файла в строку
-    if (file.is_open()) {
-        string temp;
-        while (getline(file, temp)) {
-            strFile += temp;
-            if (!file.eof()) {
-                strFile += '\n';
+    while (!this->file.eof()) {
+        if (this->currChar  == '\"') {
+            this->count++;
+            this->file.get(this->currChar);
+            for (; this->currChar != '\"' && !this->file.eof();) {
+                stream << this->currChar;
+                this->file.get(this->currChar);
             }
-        }
-    } else {
-        cout << "Error opening file" << endl;
-    }
-
-    //вывод цитат
-    if (checkStr()) {
-        for (int i(0), j; i < strFile.size(); i++) {
-            if (strFile[i] == '\"') {
-                for ((j = i)++; strFile[j] != '\"'; j++) {
-                    stream << strFile[j];
-                }
-                stream << '\n';
-                i = j;
+            if (this->currChar  == '\"') {
+                this->count++;
             }
+            this->stream << '\n';
         }
-    } else {
-        cout << "Некорректное число кавычек" << endl;
+        this->file.get(this->currChar);
     }
-    stream << '\n';
-    cout << stream.str();
-}
-
-//верное ли число кавычек
-bool fileToConsoleOutput::checkStr() {
-    int count = 0;
-    int lim = strFile.size();
-    for (int i = 0; i < lim;)
-        if (strFile[i++] == '\"')
-            count++;
-    return !(count % 2);
+    if (!this->count) {
+        cout << "---- There are no quotes! ----" << endl;
+    } else if (!(this->count % 2)) {
+        cout << "---- Quotes found ----" << endl;
+        cout << this->stream.str();
+    } else {
+        cout << "Incorrect numbers of quote signs!" << endl;
+    }
 }
